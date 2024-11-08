@@ -17,8 +17,10 @@ export default function UseUserExample() {
 
   return (
     <View>
-      <Text>Hello, {user.firstName} welcome to Clerk</Text>
-      <Button onPress={async () => await signOut({ redirectUrl: '/sign-in' })} title="Sign Out" />
+      <Text
+      style = {{fontSize: 20, marginTop: 30, color: 'white', textAlign: 'center'}}
+      >Hello, {user.firstName} welcome to Clerk</Text>
+      <Button  onPress={async () => await signOut({ redirectUrl: '/sign-in' })} title="Sign Out" />
     </View>
   );
 }
