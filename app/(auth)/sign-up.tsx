@@ -9,6 +9,8 @@ export default function SignUpScreen() {
 
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [username, setUsername] = React.useState("");
   const [pendingVerification, setPendingVerification] = React.useState(false);
   const [code, setCode] = React.useState("");
 
@@ -21,6 +23,8 @@ export default function SignUpScreen() {
       await signUp.create({
         emailAddress,
         password,
+        firstName: name,
+        username,
       });
 
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
@@ -61,12 +65,26 @@ export default function SignUpScreen() {
       {!pendingVerification && (
         <>
           <TextInput
+            style={{ marginBottom: 10, backgroundColor: "white", padding: 5 }}
+            value={name}
+            placeholder="Name..."
+            onChangeText={(name) => setName(name)}
+          />
+          <TextInput
+            style={{ marginBottom: 10, backgroundColor: "white", padding: 5 }}
+            value={username}
+            placeholder="Username..."
+            onChangeText={(username) => setUsername(username)}
+          />
+          <TextInput
+            style={{ marginBottom: 10, backgroundColor: "white", padding: 5 }}
             autoCapitalize="none"
             value={emailAddress}
             placeholder="Email..."
             onChangeText={(email) => setEmailAddress(email)}
           />
           <TextInput
+            style={{ marginBottom: 10, backgroundColor: "white", padding: 5 }}
             value={password}
             placeholder="Password..."
             secureTextEntry={true}
@@ -78,6 +96,7 @@ export default function SignUpScreen() {
       {pendingVerification && (
         <>
           <TextInput
+            style={{ marginBottom: 10, backgroundColor: "white", padding: 5 }}
             value={code}
             placeholder="Code..."
             onChangeText={(code) => setCode(code)}
