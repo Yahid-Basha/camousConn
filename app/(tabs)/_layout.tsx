@@ -1,5 +1,7 @@
-import { Tabs } from 'expo-router';
+import { Redirect, Tabs } from 'expo-router';
 import React from 'react';
+import { useAuth } from '@clerk/clerk-react';
+import { SignedIn, SignedOut } from '@clerk/clerk-react';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
@@ -9,6 +11,8 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
 
   return (
+    <>
+      <SignedIn>
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
@@ -32,6 +36,11 @@ export default function TabLayout() {
           ),
         }}
       />
-    </Tabs>
+        </Tabs>
+      </SignedIn>
+      <SignedOut>
+        <Redirect href={"/sign-in"} />
+      </SignedOut>
+    </>
   );
 }
