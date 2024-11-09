@@ -3,6 +3,7 @@ import axios from "axios";
 import { TextInput, Button, View, Alert, Text, StyleSheet } from "react-native";
 import { useSignUp, useUser } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
+import { Link } from "expo-router";
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -66,7 +67,7 @@ export default function SignUpScreen() {
   };
 
   return (
-    <View>
+    // <View>
       <View style={styles.background}>
       <View style={styles.container}>
         <Text style={styles.title}>Register</Text>
@@ -93,12 +94,14 @@ export default function SignUpScreen() {
             autoCapitalize="none"
             value={emailAddress}
             placeholder="Enter your email"
+            placeholderTextColor="rgba(0, 0, 0, 0.5)"
             onChangeText={(email) => setEmailAddress(email)}
           />
           <TextInput
             style={styles.input}
             value={password}
             placeholder="Enter your password"
+            placeholderTextColor="rgba(0, 0, 0, 0.5)"
             secureTextEntry={true}
             onChangeText={(password) => setPassword(password)}
           />
@@ -106,6 +109,13 @@ export default function SignUpScreen() {
               <Text style={styles.buttonText} onPress={onSignUpPress}>
                 Sign Up
               </Text>
+            </View>
+
+            <View style={styles.linkContainer}>
+              <Text style={styles.text}>Already have an account?</Text>
+              <Link href="/sign-up">
+                <Text style={styles.link}>Login</Text>
+              </Link>
             </View>
         </>
       )}
@@ -127,7 +137,7 @@ export default function SignUpScreen() {
       )}
     </View>
   </View>
-  </View>
+  // </View>
   );
 }
 
@@ -181,5 +191,23 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 16,
+  },
+  linkContainer: {
+    marginTop: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text: {
+    color: 'rgba(0, 0, 0, 1)',
+    fontSize: 14,
+    marginRight: 5,
+  },
+  link: {
+    // color: 'rgb(77, 122, 87)',
+    // color: 'rgb(61, 143, 179)',
+    color: 'rgb(107, 113, 165)', //lavender
+    fontSize: 14,
+    fontWeight: 'bold',
   },
 });
