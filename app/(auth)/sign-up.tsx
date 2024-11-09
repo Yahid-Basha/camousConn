@@ -1,6 +1,6 @@
 import * as React from "react";
 import axios from "axios";
-import { TextInput, Button, View, Alert, StyleSheet } from "react-native";
+import { TextInput, Button, View, Alert, Text, StyleSheet } from "react-native";
 import { useSignUp, useUser } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 
@@ -126,6 +126,7 @@ export default function SignUpScreen() {
         </>
       )}
     </View>
+  </View>
   </View>
   );
 }
