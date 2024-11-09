@@ -1,5 +1,5 @@
 import { Redirect, Tabs } from 'expo-router';
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import { useAuth } from '@clerk/clerk-react';
 import { SignedIn, SignedOut } from '@clerk/clerk-react';
 
@@ -16,7 +16,7 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
+        headerShown: true,
       }}>
       <Tabs.Screen
         name="index"

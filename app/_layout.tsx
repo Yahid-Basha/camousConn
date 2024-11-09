@@ -8,6 +8,7 @@ import 'react-native-reanimated';
 import { ClerkProvider, ClerkLoaded, useAuth } from "@clerk/clerk-expo";
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { UserContext } from '@/UserContext';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -30,6 +31,9 @@ function AuthNavigator() {
     <Stack initialRouteName="(auth)">
       <Stack.Screen name="(auth)" options={{ headerShown: false }} />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="Chats" options={{ headerShown: false }} />
+      <Stack.Screen name="Friends" options={{ headerShown: false }} />
+      <Stack.Screen name="Messages" options={{headerShown: false}}/>
       <Stack.Screen name="+not-found" />
     </Stack>
   );
@@ -55,7 +59,9 @@ export default function RootLayout() {
     <ClerkProvider publishableKey={publishableKey}>
       <ClerkLoaded>
         <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+          <UserContext>
           <AuthNavigator />
+          </UserContext>
         </ThemeProvider>
       </ClerkLoaded>
     </ClerkProvider>

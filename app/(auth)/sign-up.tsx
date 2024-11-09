@@ -1,6 +1,7 @@
 import * as React from "react";
-import { TextInput, Button, View } from "react-native";
-import { useSignUp } from "@clerk/clerk-expo";
+import axios from "axios";
+import { TextInput, Button, View, Alert } from "react-native";
+import { useSignUp, useUser } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 
 export default function SignUpScreen() {
@@ -13,6 +14,7 @@ export default function SignUpScreen() {
   const [username, setUsername] = React.useState("");
   const [pendingVerification, setPendingVerification] = React.useState(false);
   const [code, setCode] = React.useState("");
+
 
   const onSignUpPress = async () => {
     if (!isLoaded) {
@@ -33,7 +35,9 @@ export default function SignUpScreen() {
     } catch (err: any) {
       // See https://clerk.com/docs/custom-flows/error-handling
       // for more info on error handling
-      console.error(JSON.stringify(err, null, 2));
+      Alert.alert(err.errors[0].message, "", [{ text: "OK", style: "cancel" }]);
+      // console.error(JSON.stringify(err, null, 2));
+      console.log(err.errors[0].message);
     }
   };
 
@@ -56,6 +60,7 @@ export default function SignUpScreen() {
     } catch (err: any) {
       // See https://clerk.com/docs/custom-flows/error-handling
       // for more info on error handling
+      Alert.alert(err.message);
       console.error(JSON.stringify(err, null, 2));
     }
   };
