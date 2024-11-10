@@ -1,5 +1,6 @@
 import { getCampusInfo } from "./controllers/campusInfoController";
-
+import { getUserData } from "./controllers/userController";
+import { updateUserInfo } from "./controllers/updateUserInfo";
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -54,7 +55,7 @@ app.post("/register", async (req: any, res:any) => {
   console.log("Received user data:", req.body);
   // create a new user
     const newUser = new User({
-        _id: clerkId,
+        clerkId,
         username,
         name,
         email,
@@ -72,3 +73,6 @@ app.post("/register", async (req: any, res:any) => {
 });
 
 app.get("/campus-info", getCampusInfo);
+app.get('/user', getUserData);
+app.put("/user/update-info", updateUserInfo);
+

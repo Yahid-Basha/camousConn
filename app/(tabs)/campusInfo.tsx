@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator, Alert, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, Alert, StyleSheet, Dimensions, ScrollView } from 'react-native';
 import axios from 'axios';
-import { Image } from 'react-native';
+import { Image, Linking } from 'react-native';
+import { useUser, useAuth, useClerk } from "@clerk/clerk-expo";
 
 
 type CampusInfo = {
@@ -12,15 +13,23 @@ type CampusInfo = {
 const CampusInfoTab: React.FC = () => {
   const [campusInfo, setCampusInfo] = useState<CampusInfo | null>(null);
   const [loading, setLoading] = useState(true);
+  const [regulation, setRegulation] = useState<string | null>(null);
+  const [department, setDepartment] = useState<string | null>(null);
 
-  // Hardcoded values for regulation and department
-  const regulation = "VR20";
-  const department = "CE";
+  const { userId } = useAuth();
+
 
   useEffect(() => {
-    handleFetchCampusInfo();
-    console.log("Campus Info Tab mounted");
-  }, []);
+    if (userId) {
+        fetchUserData(userId);
+      }
+  }, [userId]);
+
+  useEffect(() => {
+    if (regulation && department) {
+      handleFetchCampusInfo();
+    }
+  }, [regulation, department]);
 
   const handleFetchCampusInfo = () => {
     console.log("Fetching campus info for regulation:", regulation, "and department:", department);
@@ -45,6 +54,24 @@ const CampusInfoTab: React.FC = () => {
       });
   };
 
+  const fetchUserData = async (userId: string) => {
+    try {
+      const response = await axios.get(`http://192.168.0.103:3000/user`, {
+        params: {
+          userId
+        }
+      })
+      const userData = response.data;
+      console.log('User data:', response.data);
+
+      // Set regulation and department from user data
+      setRegulation(userData.regulation);
+      setDepartment(userData.department);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -62,6 +89,7 @@ const CampusInfoTab: React.FC = () => {
   }
 
   return (
+    <ScrollView showsVerticalScrollIndicator={false}>
     <View style={styles.container}>
       {/* <Text style={styles.title}>Campus Information</Text> */}
 
@@ -97,6 +125,7 @@ const CampusInfoTab: React.FC = () => {
             />
         </View>
     </View>
+    </ScrollView>
 
 
 

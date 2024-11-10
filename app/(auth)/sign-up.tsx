@@ -8,6 +8,7 @@ import { Link } from "expo-router";
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
   const router = useRouter();
+  const [redirected, setRedirected] = React.useState(false);
 
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -54,7 +55,31 @@ export default function SignUpScreen() {
 
       if (completeSignUp.status === "complete") {
         await setActive({ session: completeSignUp.createdSessionId });
-        router.replace("/");
+
+        // after sign up, send data to mongoDB server
+        const clerkId = completeSignUp.createdUserId;
+        console.log("clerkId: ", clerkId);
+        const currentUser = {
+          clerkId: clerkId,
+          name: name,
+          username: username,
+          email: emailAddress,
+        };
+        // console.log("Sending user data to server:", currentUser);
+        axios
+          .post("http://192.168.0.103:3000/register", currentUser)
+          .then((response) => {
+            Alert.alert(
+              "User created Successfully",
+              "User created Successfully"
+            );
+            // console.log("Server response:", response);
+          })
+          .catch((error) => {
+            Alert.alert("Error creating user: " + error.message);
+            console.log("Error creating user:", error);
+          });
+        router.replace("/(auth)/additional-info");
       } else {
         console.error(JSON.stringify(completeSignUp, null, 2));
       }
@@ -113,7 +138,7 @@ export default function SignUpScreen() {
 
             <View style={styles.linkContainer}>
               <Text style={styles.text}>Already have an account?</Text>
-              <Link href="/sign-up">
+              <Link href="/sign-in">
                 <Text style={styles.link}>Login</Text>
               </Link>
             </View>
