@@ -1,12 +1,14 @@
 import * as React from "react";
 import axios from "axios";
 import { TextInput, Button, View, Alert, Text, StyleSheet } from "react-native";
-import { useSignUp, useUser } from "@clerk/clerk-expo";
+import { useSignUp, useUser, useClerk, useAuth } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 import { Link } from "expo-router";
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
+  const { user } = useUser();
+  const { userId } = useAuth();
   const router = useRouter();
   const [redirected, setRedirected] = React.useState(false);
 
@@ -16,7 +18,7 @@ export default function SignUpScreen() {
   const [username, setUsername] = React.useState("");
   const [pendingVerification, setPendingVerification] = React.useState(false);
   const [code, setCode] = React.useState("");
-
+  // type any
 
   const onSignUpPress = async () => {
     if (!isLoaded) {
@@ -52,6 +54,7 @@ export default function SignUpScreen() {
       const completeSignUp = await signUp.attemptEmailAddressVerification({
         code,
       });
+      // console.log("completeSignUp: ", completeSignUp);
 
       if (completeSignUp.status === "complete") {
         await setActive({ session: completeSignUp.createdSessionId });
@@ -93,44 +96,44 @@ export default function SignUpScreen() {
 
   return (
     // <View>
-      <View style={styles.background}>
+    <View style={styles.background}>
       <View style={styles.container}>
         <Text style={styles.title}>Register</Text>
-      {!pendingVerification && (
-        <>
-          <TextInput
-            style={styles.input}
+        {!pendingVerification && (
+          <>
+            <TextInput
+              style={styles.input}
               autoCapitalize="none"
               value={name}
               placeholder="Enter your name"
               placeholderTextColor="rgba(0, 0, 0, 0.5)"
-            onChangeText={(name) => setName(name)}
-          />
-          <TextInput
-            style={styles.input}
+              onChangeText={(name) => setName(name)}
+            />
+            <TextInput
+              style={styles.input}
               autoCapitalize="none"
               value={username}
               placeholder="Enter your username"
               placeholderTextColor="rgba(0, 0, 0, 0.5)"
-            onChangeText={(username) => setUsername(username)}
-          />
-          <TextInput
-            style={styles.input}
-            autoCapitalize="none"
-            value={emailAddress}
-            placeholder="Enter your email"
-            placeholderTextColor="rgba(0, 0, 0, 0.5)"
-            onChangeText={(email) => setEmailAddress(email)}
-          />
-          <TextInput
-            style={styles.input}
-            value={password}
-            placeholder="Enter your password"
-            placeholderTextColor="rgba(0, 0, 0, 0.5)"
-            secureTextEntry={true}
-            onChangeText={(password) => setPassword(password)}
-          />
-          <View style={styles.button}>
+              onChangeText={(username) => setUsername(username)}
+            />
+            <TextInput
+              style={styles.input}
+              autoCapitalize="none"
+              value={emailAddress}
+              placeholder="Enter your email"
+              placeholderTextColor="rgba(0, 0, 0, 0.5)"
+              onChangeText={(email) => setEmailAddress(email)}
+            />
+            <TextInput
+              style={styles.input}
+              value={password}
+              placeholder="Enter your password"
+              placeholderTextColor="rgba(0, 0, 0, 0.5)"
+              secureTextEntry={true}
+              onChangeText={(password) => setPassword(password)}
+            />
+            <View style={styles.button}>
               <Text style={styles.buttonText} onPress={onSignUpPress}>
                 Sign Up
               </Text>
@@ -139,100 +142,100 @@ export default function SignUpScreen() {
             <View style={styles.linkContainer}>
               <Text style={styles.text}>Already have an account?</Text>
               <Link href="/sign-in">
+              <Link href="/sign-in">
                 <Text style={styles.link}>Login</Text>
               </Link>
             </View>
-        </>
-      )}
-      {pendingVerification && (
-        <>
-          <TextInput
-            style={styles.input}
-            value={code}
-            placeholder="Enter verification code"
-            placeholderTextColor="rgba(0, 0, 0, 0.5)"
-            onChangeText={(code) => setCode(code)}
-          />
-          <View style={styles.button}>
+          </>
+        )}
+        {pendingVerification && (
+          <>
+            <TextInput
+              style={styles.input}
+              value={code}
+              placeholder="Enter verification code"
+              placeholderTextColor="rgba(0, 0, 0, 0.5)"
+              onChangeText={(code) => setCode(code)}
+            />
+            <View style={styles.button}>
               <Text style={styles.buttonText} onPress={onPressVerify}>
                 Verify Email
               </Text>
             </View>
-        </>
-      )}
+          </>
+        )}
+      </View>
     </View>
-  </View>
-  // </View>
+    // </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   container: {
-    width: '80%',
+    width: "80%",
     padding: 20,
     borderRadius: 15,
-    backgroundColor: 'rgba(255, 255, 255, 1)', // Solid white background
+    backgroundColor: "rgba(255, 255, 255, 1)", // Solid white background
     borderWidth: 2,
-    borderColor: 'rgba(0, 0, 0, 0.1)', // Light border color for better contrast
-    shadowColor: '#000',
+    borderColor: "rgba(0, 0, 0, 0.1)", // Light border color for better contrast
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 10 }, // Increased height for levitating effect
     shadowOpacity: 0.3, // Slightly increased opacity for more pronounced shadow
     shadowRadius: 20, // Increased radius for softer shadow edges
     elevation: 10, // Increased elevation for Android
-    alignItems: 'center',
+    alignItems: "center",
   },
   title: {
     fontSize: 24,
-    color: 'rgba(0, 0, 0, 1)',
-    fontWeight: 'bold',
-    textAlign: 'center',
+    color: "rgba(0, 0, 0, 1)",
+    fontWeight: "bold",
+    textAlign: "center",
     marginBottom: 20,
   },
   input: {
-    width: '90%',
+    width: "90%",
     padding: 10,
     marginVertical: 10,
     borderRadius: 10,
-    color: 'rgb(0, 0, 0)', // Light text color
+    color: "rgb(0, 0, 0)", // Light text color
     borderWidth: 1,
-    borderColor: 'rgb(186, 186, 186)',
+    borderColor: "rgb(186, 186, 186)",
     fontSize: 16,
   },
   button: {
-    width: '40%',
+    width: "40%",
     paddingVertical: 10,
     borderRadius: 10,
-    backgroundColor: 'rgb(107, 113, 165)', // lavender
+    backgroundColor: "rgb(107, 113, 165)", // lavender
     marginTop: 20,
   },
   buttonText: {
-    textAlign: 'center',
-    color: '#fff',
-    fontWeight: 'bold',
+    textAlign: "center",
+    color: "#fff",
+    fontWeight: "bold",
     fontSize: 16,
   },
   linkContainer: {
     marginTop: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   text: {
-    color: 'rgba(0, 0, 0, 1)',
+    color: "rgba(0, 0, 0, 1)",
     fontSize: 14,
     marginRight: 5,
   },
   link: {
     // color: 'rgb(77, 122, 87)',
     // color: 'rgb(61, 143, 179)',
-    color: 'rgb(107, 113, 165)', //lavender
+    color: "rgb(107, 113, 165)", //lavender
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
