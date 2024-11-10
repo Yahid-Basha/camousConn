@@ -21,7 +21,7 @@ export default function page() {
   }, []);
   const fetchRooms = () => {
     axios
-      .get(`http://10.0.57.76:3000/rooms/${userId}`)
+      .get(`http://192.168.0.103:3000/rooms/${userId}`)
       .then((response) => {
         setRooms(response.data);
       })

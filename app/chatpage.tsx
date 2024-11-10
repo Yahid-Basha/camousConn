@@ -38,7 +38,7 @@ const ChatPage = () => {
   const fetchMessages = async () => {
     try {
       const response = await fetch(
-        `http://10.0.57.76:3000/messages/${userId}/${roomId}`
+        `http://192.168.0.103:3000/messages/${userId}/${roomId}`
       );
       const data = await response.json();
 
@@ -60,7 +60,7 @@ const ChatPage = () => {
     const fetchCurrentUser = async () => {
       try {
         console.log("fetching user data");
-        const response = await fetch(`http://10.0.57.76:3000/user/${userId}`);
+        const response = await fetch(`http://192.168.0.103:3000/user/${userId}`);
 
         const data = await response.json();
         // console.log("data", data);
@@ -77,7 +77,7 @@ const ChatPage = () => {
     const fetchRecepientData = async () => {
       console.log("fetching room data");
       try {
-        const response = await fetch(`http://10.0.57.76:3000/room/${roomId}`);
+        const response = await fetch(`http://192.168.0.103:3000/room/${roomId}`);
 
         const data = await response.json();
         setRecepientData(data);
@@ -140,7 +140,7 @@ const ChatPage = () => {
         formData.append("imageUrl", imageFileUrl);
       }
       console.log("formData", formData);
-      const response = await fetch("http://10.0.57.76:3000/sendMessage", {
+      const response = await fetch("http://192.168.0.103:3000/sendMessage", {
         method: "POST",
         body: formData,
       });

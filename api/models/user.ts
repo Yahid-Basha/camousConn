@@ -82,6 +82,14 @@ const userSchema = new mongoose.Schema({
       ref: "Room",
     },
   ],
+
+  attendance: Number,
+  upcomingAssignments: [{ title: String, dueDate: Date }],
+  upcomingExams: [{ subject: String, examDate: Date }],
+  achievements: [{ title: String, description: String, date: Date }],
+  certificates: [String], // URLs or filenames
+  extracurricularActivities: [String],
+  grades: { type: Map, of: String },
 });
 
 export const User = mongoose.model("User", userSchema);

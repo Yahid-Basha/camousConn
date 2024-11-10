@@ -41,7 +41,7 @@ const CampusInfoTab: React.FC = () => {
     );
 
     axios
-      .get(`http://10.0.57.76:3000/campus-info`, {
+      .get(`http://192.168.0.103:3000/campus-info`, {
         params: {
           regulation,
           department,

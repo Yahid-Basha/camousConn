@@ -26,7 +26,7 @@ import { Feather } from "@expo/vector-icons";
 //     // implement new room also implement the user search
 //     console.log("create room");
 //     axios
-//       .post("http://10.0.57.76:3000/rooms", {
+//       .post("http://192.168.0.103:3000/rooms", {
 //         roomName: name,
 //         roomCreator: userId,
 //       })
@@ -77,7 +77,7 @@ const HeaderRight = ({ colorScheme }: { colorScheme: "light" | "dark" }) => {
   ) => {
     console.log("Creating room", { roomName: name, roomCreator: userId });
     axios
-      .post("http://10.0.57.76:3000/rooms", {
+      .post("http://192.168.0.103:3000/rooms", {
         roomName: name,
         roomCreator: userId,
         roomDescription,
@@ -175,7 +175,7 @@ export default function TabLayout() {
     <Stack.Screen name="index" options={{ headerShown: false }} />
     <Stack.Screen name="rooms" options={{ headerShown: true }} />
     <Stack.Screen name="campusInfo" options={{ headerShown: false }} />
-    <Stack.Screen name="dashboard" options={{ headerShown: false }} />
+    {/* <Stack.Screen name="dashboard" options={{ headerShown: false }} /> */}
     <Stack.Screen name="not-found" options={{ headerShown: false }} />
   </Stack>;
 
@@ -190,10 +190,10 @@ export default function TabLayout() {
           <Tabs.Screen
             name="index"
             options={{
-              title: "Home",
+              title: "Dashboard",
               tabBarIcon: ({ color, focused }) => (
                 <TabBarIcon
-                  name={focused ? "home" : "home-outline"}
+                  name={focused ? "speedometer" : "speedometer-outline"}
                   color={color}
                 />
               ),
@@ -212,7 +212,7 @@ export default function TabLayout() {
               headerRight: () => <HeaderRight colorScheme={colorScheme} />,
             }}
           />
-          <Tabs.Screen
+          {/* <Tabs.Screen
             name="dashboard"
             options={{
               title: "Dashboard",
@@ -223,7 +223,7 @@ export default function TabLayout() {
                 />
               ),
             }}
-          />
+          /> */}
 
           <Tabs.Screen
             name="campusInfo"
