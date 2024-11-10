@@ -30,8 +30,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "no regulation set", // Default value for regulation
   },
-  //   "MongoServerError: E11000 duplicate key error collection: test.users index: clerkId_1 dup key: { clerkId: null }Error creating user"
-  //"{"name":"Yaseen","username":"yaseen","email":"yahidbashat@gmail.com"}"
+  rollno: {
+    type: String,
+    default: "no rollno set", // Default value for rollno
+  },
   connectRequests: [
     {
       type: mongoose.Schema.Types.ObjectId,

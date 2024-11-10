@@ -1,4 +1,6 @@
 import { getCampusInfo } from "./controllers/campusInfoController";
+import { getUserData } from "./controllers/userController";
+import { updateUserInfo } from "./controllers/updateUserInfo";
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -127,6 +129,10 @@ app.post("/rooms", async (req: any, res: any) => {
 });
 
 app.get("/campus-info", getCampusInfo);
+app.get('/user', getUserData);
+app.put("/user/update-info", updateUserInfo);
+
+
 
 const multer = require("multer");
 

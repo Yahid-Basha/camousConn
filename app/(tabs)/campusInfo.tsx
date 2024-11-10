@@ -1,18 +1,9 @@
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ActivityIndicator,
-  Alert,
-  StyleSheet,
-  Dimensions,
-  ScrollView,
-  Linking,
-  RefreshControl,
-} from "react-native";
-import axios from "axios";
-import { Image } from "react-native";
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, ActivityIndicator, Alert, StyleSheet, Dimensions, ScrollView, RefreshControl } from 'react-native';
+import axios from 'axios';
+import { Image, Linking } from 'react-native';
+import { useUser, useAuth, useClerk } from "@clerk/clerk-expo";
+
 
 type CampusInfo = {
   academicCalendarUrl: string;
@@ -23,15 +14,23 @@ const CampusInfoTab: React.FC = () => {
   const [campusInfo, setCampusInfo] = useState<CampusInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [regulation, setRegulation] = useState<string | null>(null);
+  const [department, setDepartment] = useState<string | null>(null);
 
-  // Hardcoded values for regulation and department
-  const regulation = "VR20";
-  const department = "CE";
+  const { userId } = useAuth();
+
 
   useEffect(() => {
-    handleFetchCampusInfo();
-    console.log("Campus Info Tab mounted");
-  }, []);
+    if (userId) {
+        fetchUserData(userId);
+      }
+  }, [userId]);
+
+  useEffect(() => {
+    if (regulation && department) {
+      handleFetchCampusInfo();
+    }
+  }, [regulation, department]);
 
   const handleFetchCampusInfo = () => {
     console.log(
@@ -60,6 +59,24 @@ const CampusInfoTab: React.FC = () => {
         setLoading(false);
         setRefreshing(false);
       });
+  };
+
+  const fetchUserData = async (userId: string) => {
+    try {
+      const response = await axios.get(`http://192.168.0.103:3000/user`, {
+        params: {
+          userId
+        }
+      })
+      const userData = response.data;
+      console.log('User data:', response.data);
+
+      // Set regulation and department from user data
+      setRegulation(userData.regulation);
+      setDepartment(userData.department);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
   };
 
   const onRefresh = () => {

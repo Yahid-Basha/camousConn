@@ -10,6 +10,8 @@ export default function SignUpScreen() {
   const { user } = useUser();
   const { userId } = useAuth();
   const router = useRouter();
+  const [redirected, setRedirected] = React.useState(false);
+
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [name, setName] = React.useState("");
@@ -68,21 +70,19 @@ export default function SignUpScreen() {
         };
         // console.log("Sending user data to server:", currentUser);
         axios
-          .post("http://10.0.57.76:3000/register", currentUser)
+          .post("http://192.168.0.103:3000/register", currentUser)
           .then((response) => {
             Alert.alert(
               "User created Successfully",
               "User created Successfully"
             );
-            console.log("Server response:", response);
+            // console.log("Server response:", response);
           })
           .catch((error) => {
             Alert.alert("Error creating user: " + error.message);
             console.log("Error creating user:", error);
           });
-
-        // Redirect to home screen
-        router.replace("/");
+        router.replace("/(auth)/additional-info");
       } else {
         console.error(JSON.stringify(completeSignUp, null, 2));
       }
