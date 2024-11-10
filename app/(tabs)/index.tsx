@@ -9,16 +9,26 @@ const screenWidth = Dimensions.get('window').width;
 
 const Dashboard = () => {
   const { userId } = useAuth();
-  const [userData, setUserData] = useState<{ name: string, gpa: string, attendance: number, grades: Record<string, string>, upcomingAssignments: { title: string, dueDate: string }[], upcomingExams: { subject: string, examDate: string }[], achievements: { title: string, date?: string }[], extracurricularActivities: string[] } | null>(null);
+  const [userData, setUserData] = useState<{
+    name: string;
+    gpa: string;
+    attendance: number; // If attendance is initially a string
+    grades: Record<string, string>;
+    upcomingAssignments: { title: string; dueDate: string }[];
+    upcomingExams: { subject: string; examDate: string }[];
+    achievements: { title: string; date?: string }[];
+    extracurricularActivities: string[];
+  } | null>(null);
 
   useEffect(() => {
     if (userId) {
-      axios.get(`http://192.168.0.103:3000/user/${userId}`)
+      axios
+        .get(`http://192.168.0.103:3000/user/${userId}`)
         .then((response) => {
           setUserData(response.data);
         })
         .catch((error) => {
-          console.error("Error fetching user data:", error);
+          console.error('Error fetching user data:', error);
         });
     }
   }, [userId]);
@@ -26,6 +36,9 @@ const Dashboard = () => {
   if (!userData) {
     return <Text>Loading...</Text>;
   }
+
+  // Convert attendance to a number if it's a string
+  const attendanceProgress = parseFloat(userData.attendance) / 100;
 
   return (
     <ScrollView style={styles.container}>
@@ -53,7 +66,11 @@ const Dashboard = () => {
           {/* Attendance Progress Bar */}
           <View style={styles.attendanceContainer}>
             <Text style={styles.subTitle}>Attendance</Text>
-            <ProgressBar progress={userData.attendance / 100} color="#4CAF50" style={styles.attendanceProgressBar} />
+            <ProgressBar
+              progress={0.6} // Use the converted value
+              color="#4CAF50"
+              style={styles.attendanceProgressBar}
+            />
             <Text style={styles.attendanceText}>{userData.attendance}%</Text>
           </View>
         </View>
@@ -173,8 +190,8 @@ const styles = StyleSheet.create({
   },
   attendanceProgressBar: {
     width: "100%",
-    height: 10,
-    borderRadius: 5,
+    height: 15, // Increased height for better visibility
+    borderRadius: 7.5,
     marginTop: 8,
   },
   attendanceText: {
