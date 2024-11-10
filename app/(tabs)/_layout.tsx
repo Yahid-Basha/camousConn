@@ -1,4 +1,4 @@
-import { Redirect, Tabs } from "expo-router";
+import { Redirect, router, Tabs } from "expo-router";
 import React, { useLayoutEffect } from "react";
 import { useAuth, useClerk } from "@clerk/clerk-expo";
 import { SignedIn, SignedOut } from "@clerk/clerk-expo";
@@ -10,6 +10,7 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import { Alert, Button, Modal, Pressable, TextInput, View } from "react-native";
 import axios from "axios";
 import { useState } from "react";
+import { Feather } from "@expo/vector-icons";
 
 // const HeaderRight = ({ colorScheme }: { colorScheme: "light" | "dark" }) => {
 //   const { signOut } = useClerk();
@@ -94,12 +95,22 @@ const HeaderRight = ({ colorScheme }: { colorScheme: "light" | "dark" }) => {
 
   return (
     <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
+      <Pressable
+        onPress={() => {
+          router.push({
+            pathname: "/search",
+          });
+        }}
+      >
+        <Feather name="search" size={28} color="black" />
+      </Pressable>
       <Pressable onPress={() => setModalVisible(true)}>
         <AntDesign name="pluscircleo" size={24} color="black" />
       </Pressable>
       <Pressable onPress={onSignOut} style={{ marginRight: 15 }}>
         <TabBarIcon name="log-out-outline" color={Colors[colorScheme].tint} />
       </Pressable>
+
       <Modal
         animationType="slide"
         transparent={true}

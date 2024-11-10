@@ -25,6 +25,7 @@ function AuthNavigator() {
       <Stack.Screen name="Chats" options={{ headerShown: false }} />
       <Stack.Screen name="Friends" options={{ headerShown: false }} />
       <Stack.Screen name="Messages" options={{ headerShown: false }} />
+      <Stack.Screen name="Search" options={{ headerShown: true }} />
       <Stack.Screen
         name="chatpage"
         options={({ route, navigation }) => ({

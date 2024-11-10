@@ -5,13 +5,20 @@ import React, { useEffect, useState } from "react";
 import User from "@/api/models/user";
 import Room from "@/components/Rooms";
 import { useFocusEffect } from "@react-navigation/native";
+import { ScrollView, RefreshControl } from "react-native";
 
 export default function page() {
   const [rooms, setRooms] = useState<any[]>([]);
   const { userId } = useAuth();
   const { isLoaded, isSignedIn, user } = useUser();
   const { signOut } = useClerk();
+  const [refreshing, setRefreshing] = useState(false);
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    fetchRooms();
+    setRefreshing(false);
+  }, []);
   const fetchRooms = () => {
     axios
       .get(`http://10.0.57.76:3000/rooms/${userId}`)
@@ -45,9 +52,15 @@ export default function page() {
   if (!isSignedIn) {
     return <Text>User not signed in</Text>;
   }
-  // console.log(rooms[0]);
+  // console.log(rooms[0])
+
   return (
-    <View>
+    <ScrollView
+      contentContainerStyle={{ flex: 1 }}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       <View>
         {rooms.length > 0 ? (
           rooms.map((item, index) => <Room key={index} item={item} />)
@@ -55,6 +68,6 @@ export default function page() {
           <Text style={{ color: "white" }}>No rooms available</Text>
         )}
       </View>
-    </View>
+    </ScrollView>
   );
 }

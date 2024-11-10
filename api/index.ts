@@ -1,5 +1,4 @@
 import { getCampusInfo } from "./controllers/campusInfoController";
-
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -222,4 +221,4 @@ app.get("/user/:userId", async (req: any, res: any) => {
   }
 });
 
-// handle permission updates
+// handle permission updatess
