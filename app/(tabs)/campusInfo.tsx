@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator, Alert, StyleSheet, Dimensions, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, Alert, StyleSheet, Dimensions, ScrollView, RefreshControl } from 'react-native';
 import axios from 'axios';
 import { Image, Linking } from 'react-native';
 import { useUser, useAuth, useClerk } from "@clerk/clerk-expo";

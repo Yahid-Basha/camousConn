@@ -142,7 +142,6 @@ export default function SignUpScreen() {
             <View style={styles.linkContainer}>
               <Text style={styles.text}>Already have an account?</Text>
               <Link href="/sign-in">
-              <Link href="/sign-in">
                 <Text style={styles.link}>Login</Text>
               </Link>
             </View>
