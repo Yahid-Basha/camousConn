@@ -10,7 +10,7 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import { Alert, Button, Modal, Pressable, TextInput, View } from "react-native";
 import axios from "axios";
 import { useState } from "react";
-import { Feather } from "@expo/vector-icons";
+import { Feather, FontAwesome } from "@expo/vector-icons";
 
 // const HeaderRight = ({ colorScheme }: { colorScheme: "light" | "dark" }) => {
 //   const { signOut } = useClerk();
@@ -120,7 +120,12 @@ const HeaderRight = ({ colorScheme }: { colorScheme: "light" | "dark" }) => {
         }}
       >
         <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
         >
           <View
             style={{
@@ -130,6 +135,20 @@ const HeaderRight = ({ colorScheme }: { colorScheme: "light" | "dark" }) => {
               borderRadius: 10,
             }}
           >
+            <Pressable
+              style={{
+                marginHorizontal: "auto",
+                borderWidth: 5,
+                borderColor: "black",
+                borderRadius: 50,
+                height: 80,
+                width: 80,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <FontAwesome name="user-o" size={55} color="black" />
+            </Pressable>
             <TextInput
               placeholder="Room Name"
               value={roomName}

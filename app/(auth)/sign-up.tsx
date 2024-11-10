@@ -97,8 +97,9 @@ export default function SignUpScreen() {
   return (
     // <View>
     <View style={styles.background}>
+      <Text style={styles.title}>Campus Connex</Text>
       <View style={styles.container}>
-        <Text style={styles.title}>Register</Text>
+        <Text style={{ fontWeight: "bold", fontSize: 18 }}>Register</Text>
         {!pendingVerification && (
           <>
             <TextInput

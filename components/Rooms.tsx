@@ -19,7 +19,7 @@ const Room = ({ item }: any) => {
       <View style={{ marginTop: 15 }}>
         <View style={{ marginLeft: 10, flexDirection: "row", gap: 10 }}>
           <Image
-            source={{ uri: item.imageLink }}
+            source={{ uri: item.imageLink || "no-image" }}
             style={{ width: 50, height: 50, borderRadius: 25 }}
             onError={(error) => {
               console.log("Error loading image:", error.nativeEvent.error);
