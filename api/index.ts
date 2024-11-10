@@ -129,10 +129,8 @@ app.post("/rooms", async (req: any, res: any) => {
 });
 
 app.get("/campus-info", getCampusInfo);
-app.get('/user', getUserData);
+app.get("/user", getUserData);
 app.put("/user/update-info", updateUserInfo);
-
-
 
 const multer = require("multer");
 
@@ -227,4 +225,81 @@ app.get("/user/:userId", async (req: any, res: any) => {
   }
 });
 
+//searching for rooms based on keyword availability in roomname or room description
+app.get("/search/:keyword", async (req: any, res: any) => {
+  try {
+    console.log("Searching for rooms with keyword:", req.params);
+    const { keyword } = req.params;
+    const rooms = await Room.find({
+      $or: [
+        { roomName: { $regex: keyword, $options: "i" } },
+        { roomDescription: { $regex: keyword, $options: "i" } },
+      ],
+    });
+    res.status(200).json(rooms);
+  } catch (error) {
+    console.error("Error searching for rooms:", error);
+    res.status(500).json("Failed to search for rooms");
+  }
+});
+
+// end point to let user join a room
+app.post("/joinRoom", async (req: any, res: any) => {
+  try {
+    const { userId, roomId } = req.body.params;
+    // console.log("Joining room:", req.body);
+    console.log("Joining room:", userId, roomId);
+    const user = await User.findOne({ clerkId: userId });
+    console.log(user);
+    const room = await Room.findById(roomId);
+    console.log(room);
+    if (user && room) {
+      user.partOfRooms.push(room._id);
+      await user.save();
+      res.status(200).json("Room joined successfully");
+    } else {
+      res.status(404).json("User or room not found");
+    }
+  } catch (error) {
+    console.error("Error joining room:", error);
+    res.status(500).json("Failed to join room");
+  }
+});
+
+// handle roomName change
+app.post("/changeGroupName", async (req: any, res: any) => {
+  try {
+    console.log("Updating group name:", req.body);
+    const { roomId, updatedroomName } = req.body;
+    const room = await Room.findById(roomId);
+    if (room) {
+      room.roomName = updatedroomName;
+      await room.save();
+      res.status(200).json("Group name updated successfully");
+    } else {
+      res.status(404).json("Room not found");
+    }
+  } catch (error) {
+    console.error("Error updating group name:", error);
+    res.status(500).json("Failed to update group name");
+  }
+});
+//handle image link change
+app.post("/changeImageLink", async (req: any, res: any) => {
+  try {
+    console.log("Updating image link:", req.body);
+    const { roomId, imageLink } = req.body;
+    const room = await Room.findById(roomId);
+    if (room) {
+      room.imageLink = imageLink;
+      await room.save();
+      res.status(200).json("Image link updated successfully");
+    } else {
+      res.status(404).json("Room not found");
+    }
+  } catch (error) {
+    console.error("Error updating image link:", error);
+    res.status(500).json("Failed to update image link");
+  }
+});
 // handle permission updatess

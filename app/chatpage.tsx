@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Image,
 } from "react-native";
+
 import * as ImagePicker from "expo-image-picker";
 import { Entypo, FontAwesome, Ionicons, Octicons } from "@expo/vector-icons";
 import EmojiSelector from "react-native-emoji-selector";
@@ -179,7 +180,7 @@ const ChatPage = () => {
           </Pressable>
           {recepientData && (
             <Image
-              source={{ uri: recepientData?.imageLink }}
+              source={{ uri: recepientData?.imageLink || "no-link" }}
               style={{ width: 40, height: 40, borderRadius: 50 }}
             />
           )}
@@ -223,10 +224,12 @@ const ChatPage = () => {
                       }
                     : {
                         alignSelf: "flex-start",
-                        backgroundColor: "gray",
+                        backgroundColor: "#c88686",
                         padding: 8,
                         maxWidth: "60%",
                         borderRadius: 10,
+                        marginVertical: 2,
+                        marginHorizontal: 10,
                       }
                 }
               >
@@ -248,7 +251,7 @@ const ChatPage = () => {
           } else if (message.messageType === "image") {
             const imageUrl = message.imageUrl;
             console.log("imageUrl", imageUrl);
-            const source = { uri: imageUrl };
+            const source = { uri: imageUrl || "no-link" };
             return (
               <Pressable
                 key={index}
@@ -264,7 +267,7 @@ const ChatPage = () => {
                       }
                     : {
                         alignSelf: "flex-start",
-                        backgroundColor: "white",
+                        backgroundColor: "#d4c0c0",
                         padding: 8,
                         margin: 10,
                         borderRadius: 7,

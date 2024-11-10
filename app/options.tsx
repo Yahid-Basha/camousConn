@@ -30,7 +30,7 @@ const OptionsPage = () => {
     setPermission(newPermission);
 
     try {
-      await axios.post("/changePermission", {
+      await axios.post("http://10.0.57.76/changePermission", {
         roomId,
         permission: newPermission,
       });
@@ -43,7 +43,8 @@ const OptionsPage = () => {
 
   const handleGroupNameChange = async () => {
     try {
-      await axios.post("/changeGroupName", {
+      console.log("Updating group name:", updatedroomName);
+      await axios.post("http://10.0.57.76:3000/changeGroupName", {
         roomId,
         updatedroomName,
       });
@@ -56,7 +57,7 @@ const OptionsPage = () => {
 
   const handleImageLinkChange = async () => {
     try {
-      await axios.post("/changeImageLink", {
+      await axios.post("http://10.0.57.76:3000/changeImageLink", {
         roomId,
         imageLink,
       });
@@ -89,7 +90,7 @@ const OptionsPage = () => {
         <TextInput
           style={styles.input}
           value={updatedroomName}
-          onChange={(e) => setUpdatedRoomName(e.target.value)}
+          onChangeText={(text) => setUpdatedRoomName(text)}
           placeholder="Enter new room name"
         />
         <Pressable style={styles.button} onPress={handleGroupNameChange}>
@@ -102,7 +103,7 @@ const OptionsPage = () => {
         <TextInput
           style={styles.input}
           value={imageLink}
-          onChange={(e) => setImageLink(e.target.value)}
+          onChangeText={(text) => setImageLink(text)}
           placeholder="Enter image link"
         />
         <Pressable style={styles.button} onPress={handleImageLinkChange}>
