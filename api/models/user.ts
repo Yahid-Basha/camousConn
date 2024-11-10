@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+
 const userSchema = new mongoose.Schema({
   clerkId: {
     type: String,
@@ -21,7 +22,14 @@ const userSchema = new mongoose.Schema({
     unique: true,
   },
   interests: [String],
-  department: String || "no department set",
+  department: {
+    type: String,
+    default: "no department set", // Default value for department
+  },
+  regulation: {
+    type: String,
+    default: "no regulation set", // Default value for regulation
+  },
   //   "MongoServerError: E11000 duplicate key error collection: test.users index: clerkId_1 dup key: { clerkId: null }Error creating user"
   //"{"name":"Yaseen","username":"yaseen","email":"yahidbashat@gmail.com"}"
   connectRequests: [

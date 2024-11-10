@@ -173,7 +173,7 @@ export default function TabLayout() {
       <SignedIn>
         <Tabs
           screenOptions={{
-            tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+            tabBarActiveTintColor: "rgb(107, 113, 165)",
           }}
         >
           <Tabs.Screen

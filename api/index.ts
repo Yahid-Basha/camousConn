@@ -1,3 +1,5 @@
+import { getCampusInfo } from "./controllers/campusInfoController";
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -124,6 +126,8 @@ app.post("/rooms", async (req: any, res: any) => {
       console.log(err);
     });
 });
+
+app.get("/campus-info", getCampusInfo);
 
 const multer = require("multer");
 
