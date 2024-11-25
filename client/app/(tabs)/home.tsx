@@ -268,7 +268,13 @@ const Home = () => {
       >
         {posts.map((post, index) => (
           <View key={index} style={styles.postContainer}>
-            <Text style={styles.roomName}>{post.roomId?.roomName}</Text>
+            <View style={{ flexDirection: "row", gap: 0 }}>
+              <Text style={styles.roomName}>{post.roomId?.roomName}</Text>
+
+              <Text style={{}}>
+                {new Date(post.createdAt).toLocaleDateString("en-GB")}
+              </Text>
+            </View>
             <Image source={{ uri: post.imageUrl }} style={styles.postImage} />
             <Text style={styles.caption}>{post.caption}</Text>
           </View>
@@ -304,18 +310,20 @@ const Home = () => {
             </Text>
           </TouchableOpacity>
           {image && <Image source={{ uri: image }} style={styles.postImage} />}
-          <TouchableOpacity
-            style={styles.submitButton}
-            onPress={handlePostSubmit}
-          >
-            <Text style={styles.submitButtonText}>Post</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.cancelButton}
-            onPress={() => setModalVisible(false)}
-          >
-            <Text style={styles.cancelButtonText}>Cancel</Text>
-          </TouchableOpacity>
+          <View style={{ flexDirection: "row", gap: 10 }}>
+            <TouchableOpacity
+              style={styles.submitButton}
+              onPress={handlePostSubmit}
+            >
+              <Text style={styles.submitButtonText}>Post</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={() => setModalVisible(false)}
+            >
+              <Text style={styles.cancelButtonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
     </View>
@@ -327,7 +335,7 @@ export default Home;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#F3F3F9",
     padding: 10,
   },
   scrollContainer: {
@@ -339,11 +347,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.5,
+    shadowOffset: { width: 2, height: 3 },
   },
   roomName: {
+    marginLeft: 5,
+    width: "73%",
     fontSize: 16,
+    marginBottom: 5,
     fontWeight: "bold",
   },
   postImage: {
@@ -354,6 +365,8 @@ const styles = StyleSheet.create({
   },
   caption: {
     fontSize: 14,
+    marginTop: 5,
+    textAlign: "center",
     color: "#333",
   },
   floatingButton: {
@@ -401,6 +414,7 @@ const styles = StyleSheet.create({
   submitButton: {
     backgroundColor: "#28a745",
     padding: 10,
+    width: "20%",
     borderRadius: 8,
     marginBottom: 15,
   },
@@ -412,6 +426,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#dc3545",
     padding: 10,
     borderRadius: 8,
+    marginBottom: 15,
   },
   cancelButtonText: {
     color: "#fff",

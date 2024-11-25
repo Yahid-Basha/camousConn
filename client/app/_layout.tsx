@@ -2,8 +2,6 @@ import {
   DarkTheme,
   DefaultTheme,
   ThemeProvider,
-  NavigationContainer,
-  createStackNavigator,
 } from "@react-navigation/native";
 
 import { useFonts } from "expo-font";
