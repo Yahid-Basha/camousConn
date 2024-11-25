@@ -67,6 +67,11 @@ export default function Page() {
             <Text style={styles.link}>Register</Text>
           </Link>
         </View>
+        <View style={styles.linkContainer}>
+          <Link href="/forgot-password">
+            <Text style={styles.link}>Forgot Password</Text>
+          </Link>
+        </View>
       </View>
     </View>
   );

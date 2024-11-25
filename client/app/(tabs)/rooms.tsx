@@ -2,17 +2,18 @@ import { useUser, useAuth, useClerk } from "@clerk/clerk-expo";
 import { Text, View, Button, Alert } from "react-native";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import User from "@/api/models/user";
+import User from "../../../api/models/User";
 import Room from "@/components/Rooms";
 import { useFocusEffect } from "@react-navigation/native";
 import { ScrollView, RefreshControl } from "react-native";
 
-export default function page() {
+export default function Page() {
   const [rooms, setRooms] = useState<any[]>([]);
   const { userId } = useAuth();
   const { isLoaded, isSignedIn, user } = useUser();
   const { signOut } = useClerk();
   const [refreshing, setRefreshing] = useState(false);
+  const ipAddress = process.env.HOSTNAME;
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -21,7 +22,7 @@ export default function page() {
   }, []);
   const fetchRooms = () => {
     axios
-      .get(`http://192.168.0.103:3000/rooms/${userId}`)
+      .get(`http://10.0.57.115:3000/rooms/${userId}`)
       .then((response) => {
         setRooms(response.data);
       })

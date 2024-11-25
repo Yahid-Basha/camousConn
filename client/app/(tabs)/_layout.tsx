@@ -1,5 +1,7 @@
-import { Redirect, router, Tabs } from "expo-router";
+import { Redirect, router } from "expo-router";
 import React, { useLayoutEffect } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useAuth, useClerk } from "@clerk/clerk-expo";
 import { SignedIn, SignedOut } from "@clerk/clerk-expo";
 import { Stack } from "expo-router";
@@ -12,47 +14,11 @@ import axios from "axios";
 import { useState } from "react";
 import { Feather, FontAwesome } from "@expo/vector-icons";
 
-// const HeaderRight = ({ colorScheme }: { colorScheme: "light" | "dark" }) => {
-//   const { signOut } = useClerk();
-//   const { userId } = useAuth();
-//   const onSignOut = async () => {
-//     try {
-//       await signOut({ redirectUrl: "/sign-in" });
-//     } catch (error: any) {
-//       Alert.alert("Error signing out", error.message);
-//     }
-//   };
-//   const createRoom = (name: String, userId: String) => {
-//     // implement new room also implement the user search
-//     console.log("create room");
-//     axios
-//       .post("http://192.168.0.103:3000/rooms", {
-//         roomName: name,
-//         roomCreator: userId,
-//       })
-//       .then((response) => {
-//         console.log("Server response:", response);
-//         Alert.alert("Room created Successfully", "Room created Successfully");
-//       })
-//       .catch((error) => {
-//         Alert.alert("Error creating room: " + error.message);
-//         console.log("Error creating room:", error);
-//       });
-//   };
+import Dashboard from "./index";
+import Home from "./home";
+import CampusInfoTab from "./campusInfo";
+import Page from "./rooms";
 
-//   return (
-//     <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
-//       <Button
-//         title="Create Room"
-//         onPress={() => createRoom("Test Room", userId || "test")}
-//         color={Colors[colorScheme].tint}
-//       />
-//       <Pressable onPress={onSignOut} style={{ marginRight: 15 }}>
-//         <TabBarIcon name="log-out-outline" color={Colors[colorScheme].tint} />
-//       </Pressable>
-//     </View>
-//   );
-// };
 const HeaderRight = ({ colorScheme }: { colorScheme: "light" | "dark" }) => {
   const { signOut } = useClerk();
   const { userId } = useAuth();
@@ -60,6 +26,7 @@ const HeaderRight = ({ colorScheme }: { colorScheme: "light" | "dark" }) => {
   const [roomName, setRoomName] = useState("");
   const [roomDescription, setRoomDescription] = useState("");
   const [imageLink, setImageLink] = useState("");
+  const ipAddress = process.env.HOSTNAME;
 
   const onSignOut = async () => {
     try {
@@ -77,7 +44,7 @@ const HeaderRight = ({ colorScheme }: { colorScheme: "light" | "dark" }) => {
   ) => {
     console.log("Creating room", { roomName: name, roomCreator: userId });
     axios
-      .post("http://192.168.0.103:3000/rooms", {
+      .post("http://10.0.57.115:3000/rooms", {
         roomName: name,
         roomCreator: userId,
         roomDescription,
@@ -187,29 +154,35 @@ const HeaderRight = ({ colorScheme }: { colorScheme: "light" | "dark" }) => {
   );
 };
 
+const Tab = createBottomTabNavigator();
+
 export default function TabLayout() {
   const colorScheme = useColorScheme() ?? "light";
-
-  <Stack initialRouteName="rooms">
-    <Stack.Screen name="index" options={{ headerShown: false }} />
-    <Stack.Screen name="rooms" options={{ headerShown: true }} />
-    <Stack.Screen name="campusInfo" options={{ headerShown: false }} />
-    {/* <Stack.Screen name="dashboard" options={{ headerShown: false }} /> */}
-    <Stack.Screen name="not-found" options={{ headerShown: false }} />
-  </Stack>;
 
   return (
     <>
       <SignedIn>
-        <Tabs
+        <Tab.Navigator
           screenOptions={{
             tabBarActiveTintColor: "rgb(107, 113, 165)",
           }}
         >
-          <Tabs.Screen
-            name="index"
+          <Tab.Screen
+            name="home"
+            component={Home}
             options={{
-              title: "Dashboard",
+              tabBarIcon: ({ color, focused }) => (
+                <TabBarIcon
+                  name={focused ? "home" : "home-outline"}
+                  color={color}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="index"
+            component={Dashboard}
+            options={{
               tabBarIcon: ({ color, focused }) => (
                 <TabBarIcon
                   name={focused ? "speedometer" : "speedometer-outline"}
@@ -218,8 +191,9 @@ export default function TabLayout() {
               ),
             }}
           />
-          <Tabs.Screen
+          <Tab.Screen
             name="rooms"
+            component={Page}
             options={{
               title: "Rooms",
               tabBarIcon: ({ color, focused }) => (
@@ -231,21 +205,9 @@ export default function TabLayout() {
               headerRight: () => <HeaderRight colorScheme={colorScheme} />,
             }}
           />
-          {/* <Tabs.Screen
-            name="dashboard"
-            options={{
-              title: "Dashboard",
-              tabBarIcon: ({ color, focused }) => (
-                <TabBarIcon
-                  name={focused ? "speedometer" : "speedometer-outline"}
-                  color={color}
-                />
-              ),
-            }}
-          /> */}
-
-          <Tabs.Screen
+          <Tab.Screen
             name="campusInfo"
+            component={CampusInfoTab}
             options={{
               title: "Campus Info",
               tabBarIcon: ({ color, focused }) => (
@@ -260,7 +222,7 @@ export default function TabLayout() {
               ),
             }}
           />
-        </Tabs>
+        </Tab.Navigator>
       </SignedIn>
       <SignedOut>
         <Redirect href={"/sign-in"} />

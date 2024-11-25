@@ -11,7 +11,7 @@ export default function SignUpScreen() {
   const { userId } = useAuth();
   const router = useRouter();
   const [redirected, setRedirected] = React.useState(false);
-
+  const ipAddress = process.env.HOSTNAME;
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [name, setName] = React.useState("");
@@ -70,7 +70,7 @@ export default function SignUpScreen() {
         };
         // console.log("Sending user data to server:", currentUser);
         axios
-          .post("http://192.168.0.103:3000/register", currentUser)
+          .post("http://10.0.57.115:3000/register", currentUser)
           .then((response) => {
             Alert.alert(
               "User created Successfully",
