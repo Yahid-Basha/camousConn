@@ -27,7 +27,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false })); // handle URL-encoded data
 app.use(bodyParser.json()); // handle JSON-encoded data
 app.use(passport.initialize());
-const jwt = require("jsonwebtoken");
+
 const mongoose_url =
   "mongodb+srv://userconnexx:4XbIWfAojr4Rv0dz@cluster0.uuw5l.mongodb.net/";
 mongoose

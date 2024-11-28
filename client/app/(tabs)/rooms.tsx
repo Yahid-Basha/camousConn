@@ -22,7 +22,7 @@ export default function Page() {
   }, []);
   const fetchRooms = () => {
     axios
-      .get(`http://10.0.57.115:3000/rooms/${userId}`)
+      .get(`https://campusconn.onrender.com/rooms/${userId}`)
       .then((response) => {
         setRooms(response.data);
       })

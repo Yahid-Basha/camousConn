@@ -58,7 +58,7 @@ const CampusInfoTab: React.FC = () => {
     );
 
     axios
-      .get(`http://10.0.57.115:3000/campus-info`, {
+      .get(`https://campusconn.onrender.com/campus-info`, {
         params: {
           regulation,
           department,
@@ -80,7 +80,7 @@ const CampusInfoTab: React.FC = () => {
 
   const fetchUserData = async (userId: string) => {
     try {
-      const response = await axios.get(`http://10.0.57.115:3000/user`, {
+      const response = await axios.get(`https://campusconn.onrender.com/user`, {
         params: {
           userId,
         },
@@ -120,13 +120,16 @@ const CampusInfoTab: React.FC = () => {
         return;
       }
 
-      const response = await axios.post(`http://10.0.57.115:3000/news`, {
-        userId,
-        text: newsText,
-        link: newsLink,
-        startDate,
-        endDate,
-      });
+      const response = await axios.post(
+        `https://campusconn.onrender.com/news`,
+        {
+          userId,
+          text: newsText,
+          link: newsLink,
+          startDate,
+          endDate,
+        }
+      );
 
       if (response.status === 201) {
         Alert.alert("Success", "News posted successfully!");

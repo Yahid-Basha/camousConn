@@ -40,7 +40,7 @@ const ChatPage = () => {
   const fetchMessages = async () => {
     try {
       const response = await fetch(
-        `http://10.0.57.115:3000/messages/${userId}/${roomId}`
+        `https://campusconn.onrender.com/messages/${userId}/${roomId}`
       );
       const data = await response.json();
 
@@ -62,7 +62,9 @@ const ChatPage = () => {
     const fetchCurrentUser = async () => {
       try {
         console.log("fetching user data");
-        const response = await fetch(`http://10.0.57.115:3000/user/${userId}`);
+        const response = await fetch(
+          `https://campusconn.onrender.com/user/${userId}`
+        );
 
         const data = await response.json();
         // console.log("data", data);
@@ -79,7 +81,9 @@ const ChatPage = () => {
     const fetchRecepientData = async () => {
       console.log("fetching room data");
       try {
-        const response = await fetch(`http://10.0.57.115:3000/room/${roomId}`);
+        const response = await fetch(
+          `https://campusconn.onrender.com/room/${roomId}`
+        );
 
         const data = await response.json();
         setRecepientData(data);
@@ -142,10 +146,13 @@ const ChatPage = () => {
         formData.append("imageUrl", imageFileUrl);
       }
       console.log("formData", formData);
-      const response = await fetch("http://10.0.57.115:3000/sendMessage", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://campusconn.onrender.com/sendMessage",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (response.ok) {
         setMessage("");

@@ -70,7 +70,7 @@ export default function SignUpScreen() {
         };
         // console.log("Sending user data to server:", currentUser);
         axios
-          .post("http://10.0.57.115:3000/register", currentUser)
+          .post("https://campusconn.onrender.com/register", currentUser)
           .then((response) => {
             Alert.alert(
               "User created Successfully",

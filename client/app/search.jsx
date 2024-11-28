@@ -15,7 +15,7 @@ export default function SearchPage() {
     try {
       console.log("Searching for rooms with text:", searchText);
       const response = await fetch(
-        `http://10.0.57.115:3000/search/${searchText}`
+        `https://campusconn.onrender.com/search/${searchText}`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -31,7 +31,7 @@ export default function SearchPage() {
     try {
       setIconName("loader");
       axios
-        .post("http://10.0.57.115:3000/joinRoom", {
+        .post("https://campusconn.onrender.com/joinRoom", {
           params: { userId, roomId },
         })
         .then((response) => {

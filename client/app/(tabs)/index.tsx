@@ -46,7 +46,7 @@ const Dashboard = () => {
   const fetchData = () => {
     if (userId) {
       axios
-        .get(`http://10.0.57.115:3000/user/${userId}`)
+        .get(`https://campusconn.onrender.com/user/${userId}`)
         .then((response) => {
           console.log("User data:", response.data);
           setUserData(response.data);

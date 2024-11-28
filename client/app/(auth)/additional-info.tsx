@@ -55,7 +55,7 @@ export default function AdditionalInfoScreen() {
       };
 
       await axios.put(
-        "http://10.0.57.115:3000/user/update-info",
+        "https://campusconn.onrender.com/user/update-info",
         additionalInfo
       );
       Alert.alert("User updated successfully!");

@@ -44,7 +44,7 @@ const HeaderRight = ({ colorScheme }: { colorScheme: "light" | "dark" }) => {
   ) => {
     console.log("Creating room", { roomName: name, roomCreator: userId });
     axios
-      .post("http://10.0.57.115:3000/rooms", {
+      .post("https://campusconn.onrender.com/rooms", {
         roomName: name,
         roomCreator: userId,
         roomDescription,

@@ -48,7 +48,9 @@ const Home = () => {
   const fetchRooms = async () => {
     try {
       setRefreshing(true);
-      const response = await fetch("http://10.0.57.115:3000/getAllRooms");
+      const response = await fetch(
+        "https://campusconn.onrender.com/getAllRooms"
+      );
       const data = await response.json();
 
       if (!Array.isArray(data)) {
@@ -71,7 +73,7 @@ const Home = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch("http://10.0.57.115:3000/posts");
+      const response = await fetch("https://campusconn.onrender.com/posts");
       const data = await response.json();
       setPosts(data);
       console.log("Fetched posts:", data);
@@ -83,7 +85,9 @@ const Home = () => {
 
   const fetchActiveNews = async () => {
     try {
-      const response = await fetch("http://10.0.57.115:3000/news/active");
+      const response = await fetch(
+        "https://campusconn.onrender.com/news/active"
+      );
       const data = await response.json();
       setNews(data["news"]);
       console.log("Fetched news:", data);
@@ -96,7 +100,7 @@ const Home = () => {
   const fetchJoinedRooms = async () => {
     try {
       const response = await fetch(
-        `http://10.0.57.115:3000/getJoinedRooms?userId=${userId}`
+        `https://campusconn.onrender.com/getJoinedRooms?userId=${userId}`
       );
       const data = await response.json();
       setJoinedRooms(new Set(data.map((room: any) => room._id)));
@@ -107,7 +111,7 @@ const Home = () => {
 
   const joinRoom = async (roomId: string) => {
     try {
-      const response = await fetch("http://10.0.57.115:3000/joinRoom", {
+      const response = await fetch("https://campusconn.onrender.com/joinRoom", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -206,19 +210,22 @@ const Home = () => {
 
   const createPost = async (roomId, imageUrl) => {
     try {
-      const response = await fetch("http://10.0.57.115:3000/createPost", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          roomName,
-          roomId,
-          imageUrl,
-          caption,
-          userId,
-        }),
-      });
+      const response = await fetch(
+        "https://campusconn.onrender.com/createPost",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            roomName,
+            roomId,
+            imageUrl,
+            caption,
+            userId,
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Server error: ${response.status}`);

@@ -92,7 +92,7 @@ const EditDetails = () => {
     console.log("Updating user details:", formData);
     try {
       const response = await fetch(
-        "http://10.0.57.115:3000/user/updateUserDashboard",
+        "https://campusconn.onrender.com/user/updateUserDashboard",
         {
           method: "PUT",
           headers: {
