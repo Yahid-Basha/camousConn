@@ -3,6 +3,7 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
+
 import { useFonts } from "expo-font";
 import { router, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -22,10 +23,10 @@ function AuthNavigator() {
     <Stack initialRouteName="(auth)">
       <Stack.Screen name="(auth)" options={{ headerShown: false }} />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="Chats" options={{ headerShown: false }} />
+
       <Stack.Screen name="Friends" options={{ headerShown: false }} />
       <Stack.Screen name="Messages" options={{ headerShown: false }} />
-      <Stack.Screen name="Search" options={{ headerShown: true }} />
+
       <Stack.Screen
         name="chatpage"
         options={({ route, navigation }) => ({

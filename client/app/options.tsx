@@ -12,6 +12,7 @@ import {
 import RadioButtonGroup, { RadioButtonItem } from "expo-radio-button";
 
 const OptionsPage = () => {
+  const ipAddress = process.env.HOSTNAME;
   const router = useRouter();
   const { roomId, roomName } = useLocalSearchParams();
   console.log(roomId, roomName);
@@ -30,7 +31,7 @@ const OptionsPage = () => {
     setPermission(newPermission);
 
     try {
-      await axios.post("http://10.0.57.76/changePermission", {
+      await axios.post("http://ipaddr/changePermission", {
         roomId,
         permission: newPermission,
       });
@@ -44,7 +45,7 @@ const OptionsPage = () => {
   const handleGroupNameChange = async () => {
     try {
       console.log("Updating group name:", updatedroomName);
-      await axios.post("http://10.0.57.76:3000/changeGroupName", {
+      await axios.post("https://campusconn.onrender.com/changeGroupName", {
         roomId,
         updatedroomName,
       });
@@ -57,7 +58,7 @@ const OptionsPage = () => {
 
   const handleImageLinkChange = async () => {
     try {
-      await axios.post("http://10.0.57.76:3000/changeImageLink", {
+      await axios.post("https://campusconn.onrender.com/changeImageLink", {
         roomId,
         imageLink,
       });

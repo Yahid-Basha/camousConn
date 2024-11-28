@@ -1,15 +1,25 @@
+//models
+import User from "./models/user"; // Ensure the correct import
+import Room from "./models/room"; // Ensure the correct import
+import Message from "./models/message";
+
+//controllers
 import { getCampusInfo } from "./controllers/campusInfoController";
 import { getUserData } from "./controllers/userController";
 import { updateUserInfo } from "./controllers/updateUserInfo";
+import { updateUserDashboard } from "./controllers/updateUserDashboard";
+import { createPost, getPosts } from "./controllers/postController";
+import { getAllRooms } from "./controllers/roomsController";
+import { fetchActiveNews, postNews } from "./controllers/newsController";
+
+// essential imports
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const passport = require("passport"); // passport is a middleware for authentication
 const localStrategy = require("passport-local").Strategy;
-import User from "./models/user"; // Ensure the correct import
-import Room from "./models/room"; // Ensure the correct import
-import Message from "./models/message";
+
 const app = express();
 const port = 3000;
 app.use(cors());
@@ -17,7 +27,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false })); // handle URL-encoded data
 app.use(bodyParser.json()); // handle JSON-encoded data
 app.use(passport.initialize());
-const jwt = require("jsonwebtoken");
+
 const mongoose_url =
   "mongodb+srv://userconnexx:4XbIWfAojr4Rv0dz@cluster0.uuw5l.mongodb.net/";
 mongoose
@@ -127,10 +137,15 @@ app.post("/rooms", async (req: any, res: any) => {
       console.log(err);
     });
 });
-
+app.get("/getAllRooms", getAllRooms);
 app.get("/campus-info", getCampusInfo);
 app.get("/user", getUserData);
 app.put("/user/update-info", updateUserInfo);
+app.put("/user/updateUserDashboard", updateUserDashboard);
+app.post("/createPost", createPost);
+app.get("/posts", getPosts);
+app.post("/news", postNews);
+app.get("/news/active", fetchActiveNews);
 
 const multer = require("multer");
 
@@ -247,16 +262,32 @@ app.get("/search/:keyword", async (req: any, res: any) => {
 app.post("/joinRoom", async (req: any, res: any) => {
   try {
     const { userId, roomId } = req.body.params;
-    // console.log("Joining room:", req.body);
+
     console.log("Joining room:", userId, roomId);
+
+    // Fetch the user and room details
     const user = await User.findOne({ clerkId: userId });
-    console.log(user);
     const room = await Room.findById(roomId);
-    console.log(room);
+
+    console.log("User found to join");
+    console.log("Room found:", room?.roomName);
+
     if (user && room) {
+      // Check if the user is already part of the room
+      const isUserInRoom = user.partOfRooms.some(
+        (roomIdInUser) => roomIdInUser.toString() === room._id.toString()
+      );
+
+      if (isUserInRoom) {
+        return res.status(400).json("User is already part of the room");
+      }
+      // Add the room to the user's partOfRooms array
       user.partOfRooms.push(room._id);
       await user.save();
-      res.status(200).json("Room joined successfully");
+
+      res
+        .status(200)
+        .json({ message: "Room joined successfully", roomName: room.roomName });
     } else {
       res.status(404).json("User or room not found");
     }

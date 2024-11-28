@@ -1,6 +1,14 @@
 // AdditionalInfoScreen.tsx
 import * as React from "react";
-import { View, Text, TextInput, Alert, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Alert,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import axios from "axios";
 import { useRouter } from "expo-router";
 import { useAuth } from "@clerk/clerk-expo";
@@ -9,17 +17,25 @@ import RNPickerSelect from "react-native-picker-select";
 export default function AdditionalInfoScreen() {
   const router = useRouter();
   const { userId } = useAuth();
-
+  const ipAddress = process.env.HOSTNAME;
   const [department, setDepartment] = React.useState("");
   const [regulation, setRegulation] = React.useState("");
   const [interests, setInterests] = React.useState<string[]>([]);
   const [rollno, setRollno] = React.useState("");
 
-  const interestOptions = ["Music", "Dance", "Networks", "Machine Learning", "Artificial Intelligence"];
+  const interestOptions = [
+    "Music",
+    "Dance",
+    "Networks",
+    "Machine Learning",
+    "Artificial Intelligence",
+  ];
 
   const handleInterestChange = (interest: string) => {
     setInterests((prev) =>
-      prev.includes(interest) ? prev.filter((item) => item !== interest) : [...prev, interest]
+      prev.includes(interest)
+        ? prev.filter((item) => item !== interest)
+        : [...prev, interest]
     );
   };
 
@@ -38,7 +54,10 @@ export default function AdditionalInfoScreen() {
         rollno,
       };
 
-      await axios.put("http://192.168.0.103:3000/user/update-info", additionalInfo);
+      await axios.put(
+        "https://campusconn.onrender.com/user/update-info",
+        additionalInfo
+      );
       Alert.alert("User updated successfully!");
       router.replace("/");
     } catch (error) {
@@ -49,7 +68,6 @@ export default function AdditionalInfoScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-
       {/* Dropdown for Department */}
       <Text style={styles.label}>Department</Text>
       <View style={styles.dropdownContainer}>
@@ -104,7 +122,13 @@ export default function AdditionalInfoScreen() {
             style={styles.checkbox}
             onPress={() => handleInterestChange(interest)}
           >
-            <View style={interests.includes(interest) ? styles.checkboxSelected : styles.checkboxUnselected} />
+            <View
+              style={
+                interests.includes(interest)
+                  ? styles.checkboxSelected
+                  : styles.checkboxUnselected
+              }
+            />
           </TouchableOpacity>
           <Text style={styles.checkboxLabel}>{interest}</Text>
         </View>
@@ -205,13 +229,13 @@ const styles = StyleSheet.create({
   checkboxSelected: {
     width: 16,
     height: 16,
-    backgroundColor: 'rgb(107, 113, 165)',
+    backgroundColor: "rgb(107, 113, 165)",
   },
   submitButton: {
     width: "30%",
     paddingVertical: 8,
     borderRadius: 8,
-    backgroundColor: 'rgb(107, 113, 165)',
+    backgroundColor: "rgb(107, 113, 165)",
     alignItems: "center",
     marginTop: 20,
     elevation: 3,

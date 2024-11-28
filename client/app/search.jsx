@@ -1,20 +1,21 @@
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, Alert } from "react-native";
 import React, { useState } from "react";
 import { TextInput, Button, FlatList, Image } from "react-native";
 import axios from "axios";
 import Feather from "react-native-vector-icons/Feather";
 import { useAuth } from "@clerk/clerk-expo";
-
 export default function SearchPage() {
   const { userId } = useAuth();
   const [searchText, setSearchText] = useState("");
   const [rooms, setRooms] = useState([]);
   const [iconName, setIconName] = useState("plus-circle");
+  const ipAddress = process.env.HOSTNAME;
+
   const handleSearch = async () => {
     try {
       console.log("Searching for rooms with text:", searchText);
       const response = await fetch(
-        `http://10.0.57.76:3000/search/${searchText}`
+        `https://campusconn.onrender.com/search/${searchText}`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -30,7 +31,9 @@ export default function SearchPage() {
     try {
       setIconName("loader");
       axios
-        .post("http://10.0.57.76:3000/joinRoom", { params: { userId, roomId } })
+        .post("https://campusconn.onrender.com/joinRoom", {
+          params: { userId, roomId },
+        })
         .then((response) => {
           console.log(response.data);
           setIconName("check-circle");
@@ -40,6 +43,9 @@ export default function SearchPage() {
           setIconName("plus-circle");
         });
     } catch (error) {
+      if (response.status === 400) {
+        Alert.alert("You are already in this room");
+      }
       console.error("Error joining room:", error);
     }
   };
